@@ -2,7 +2,6 @@ package com.lessard.codesamples.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestOperations;
 
@@ -21,7 +20,7 @@ public class CustomerService {
 
     @Autowired
     private RestOperations restTemplate;
-
+    
     @Value("${tennant}")
     private String tenant;
 
@@ -33,7 +32,6 @@ public class CustomerService {
         List<Object> response = restTemplate.getForObject(url, List.class);
 
         return response;
-
     }
 
     private String buildUrl() {
