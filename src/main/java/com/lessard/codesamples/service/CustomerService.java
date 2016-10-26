@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestOperations;
+
+import java.util.List;
 
 
 /**
@@ -13,18 +16,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomerService {
 
-    @Autowired
-    private OAuth2RestOperations restTemplate;
-
-    private String tenant = "fdltestproject";
-
-
-    @Value("customer.url")
+    @Value("${customer.url}")
     private String customerUrl;
 
-    public String getAllCustomers() {
+    @Autowired
+    private RestOperations restTemplate;
 
-        String response = restTemplate.getForObject(buildUrl(), String.class);
+    @Value("${tennant}")
+    private String tenant;
+
+
+    public List<Object> getAllCustomers() {
+
+        String url = buildUrl();
+
+        List<Object> response = restTemplate.getForObject(url, List.class);
 
         return response;
 
