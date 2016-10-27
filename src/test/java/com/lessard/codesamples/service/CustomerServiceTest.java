@@ -32,7 +32,17 @@ public class CustomerServiceTest {
 
     @Test
     public void getAllCustomers() throws Exception {
+
+        System.out.println("111111111111111111111111111111111111111111111111111");
         List<Object> s = customerService.getAllCustomers();
+        System.out.println("Reponse: " + s);
+
+        System.out.println("222222222222222222222222222222222222222222222222222");
+        s = customerService.getAllCustomers();
+        System.out.println("Reponse: " + s);
+
+        System.out.println("333333333333333333333333333333333333333333333333333");
+        s = customerService.getAllCustomers();
         System.out.println("Reponse: " + s);
     }
 
