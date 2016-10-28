@@ -1,4 +1,4 @@
-package com.lessard.codesamples;
+package io.fdlessard.codesamples.yaas;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

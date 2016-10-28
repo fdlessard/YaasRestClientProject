@@ -1,4 +1,4 @@
-package com.lessard.codesamples.service;
+package io.fdlessard.codesamples.yaas.service.impl;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;

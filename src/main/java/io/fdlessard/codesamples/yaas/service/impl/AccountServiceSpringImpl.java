@@ -1,5 +1,6 @@
-package com.lessard.codesamples.service;
+package io.fdlessard.codesamples.yaas.service.impl;
 
+import io.fdlessard.codesamples.yaas.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -13,19 +14,20 @@ import java.util.List;
  */
 
 @Service
-public class CustomerService {
+public class AccountServiceSpringImpl implements AccountService {
 
     @Value("${customer.url}")
     private String customerUrl;
 
-    @Autowired
-    private RestOperations restTemplate;
-    
     @Value("${tennant}")
     private String tenant;
 
+    @Autowired
+    private RestOperations restTemplate;
 
-    public List<Object> getAllCustomers() {
+
+    @Override
+    public List<Object> getAccounts() {
 
         String url = buildUrl();
 
