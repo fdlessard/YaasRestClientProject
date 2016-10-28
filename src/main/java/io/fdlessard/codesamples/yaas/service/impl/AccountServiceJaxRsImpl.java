@@ -45,14 +45,17 @@ public class AccountServiceJaxRsImpl implements AccountService {
         GenericType<List<Account>> accountListType = new GenericType<List<Account>>() {
         };
 
-        List<Account> reponse  = client.target(customerUrl)
+        List<Account> accounts  = client.target(buildUrl())
                 .request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE)
                 .property(OAuth2Filter.PROPERTY_AUTHORIZATION_SCOPE, new AuthorizationScope(tenant, Arrays.asList(splitScopes)))
                 .get(accountListType);
 
 
-        return null;
+        return accounts;
     }
 
+    private String buildUrl() {
+        return customerUrl + "/" + tenant + "/customers";
+    }
 
 }

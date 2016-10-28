@@ -13,7 +13,6 @@ import java.util.List;
 @Service
 public class AccountServiceYaasImpl implements AccountService
 {
-
     @Value("${customer.url}")
     private String customerUrl;
 
