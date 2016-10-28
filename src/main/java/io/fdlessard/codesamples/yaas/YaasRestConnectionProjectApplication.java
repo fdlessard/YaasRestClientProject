@@ -1,5 +1,8 @@
 package io.fdlessard.codesamples.yaas;
 
+import com.sap.cloud.yaas.servicesdk.authorization.AccessTokenProvider;
+import com.sap.cloud.yaas.servicesdk.authorization.cache.SimpleCachingProviderWrapper;
+import com.sap.cloud.yaas.servicesdk.authorization.protocol.ClientCredentialsGrantProvider;
 import io.fdlessard.codesamples.yaas.service.impl.YaasRequestInterceptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -15,6 +18,7 @@ import org.springframework.security.oauth2.client.token.DefaultAccessTokenReques
 import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
 import org.springframework.web.client.RestOperations;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -62,6 +66,17 @@ public class YaasRestConnectionProjectApplication {
     }
 
 
+    @Bean
+    public AccessTokenProvider accessTokenProvider()
+    {
+        final ClientCredentialsGrantProvider clientCredentialsGrantProvider = new ClientCredentialsGrantProvider();
+
+        clientCredentialsGrantProvider.setClientId(oauth2ClientId);
+        clientCredentialsGrantProvider.setClientSecret(oauth2ClientSecret);
+        clientCredentialsGrantProvider.setTokenEndpointUri(URI.create(oauth2TokenUrl));
+
+        return new SimpleCachingProviderWrapper(clientCredentialsGrantProvider);
+    }
 
 /*
     public OAuth2RestOperations restTemplate() {

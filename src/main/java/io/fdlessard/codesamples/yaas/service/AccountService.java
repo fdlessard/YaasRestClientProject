@@ -1,5 +1,7 @@
 package io.fdlessard.codesamples.yaas.service;
 
+import io.fdlessard.codesamples.yaas.domain.Account;
+
 import java.util.List;
 
 /**
@@ -7,5 +9,5 @@ import java.util.List;
  */
 public interface AccountService {
 
-    List<Object> getAccounts();
+    List<Account> getAccounts();
 }

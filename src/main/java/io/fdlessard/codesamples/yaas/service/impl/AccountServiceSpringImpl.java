@@ -1,5 +1,6 @@
 package io.fdlessard.codesamples.yaas.service.impl;
 
+import io.fdlessard.codesamples.yaas.domain.Account;
 import io.fdlessard.codesamples.yaas.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +20,7 @@ public class AccountServiceSpringImpl implements AccountService {
     @Value("${customer.url}")
     private String customerUrl;
 
-    @Value("${tennant}")
+    @Value("${tenant}")
     private String tenant;
 
     @Autowired
@@ -27,11 +28,11 @@ public class AccountServiceSpringImpl implements AccountService {
 
 
     @Override
-    public List<Object> getAccounts() {
+    public List<Account> getAccounts() {
 
         String url = buildUrl();
 
-        List<Object> response = restTemplate.getForObject(url, List.class);
+        List<Account> response = restTemplate.getForObject(url, List.class);
 
         return response;
     }
