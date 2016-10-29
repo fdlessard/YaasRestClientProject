@@ -17,7 +17,7 @@ import java.util.Map;
         "providerId",
         "id"
 })
-public class Account {
+public class CustomerAccount {
 
     @JsonProperty("providerId")
     private String providerId;
@@ -69,7 +69,7 @@ public class Account {
     }
 
 }
-     
+
 
 
 

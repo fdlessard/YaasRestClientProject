@@ -1,6 +1,6 @@
 package io.fdlessard.codesamples.yaas.service;
 
-import io.fdlessard.codesamples.yaas.domain.Account;
+import io.fdlessard.codesamples.yaas.domain.CustomerAccount;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,19 +17,19 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest()
-public class AccountServiceTest {
+public class CustomerAccountServiceSpringImplTest {
 
     @Autowired
-    @Qualifier("accountServiceSpringImpl")
-    private AccountService accountServiceSpring;
+    @Qualifier("customerAccountServiceSpringImpl")
+    private CustomerAccountService customerAccountServiceSpring;
 
     @Autowired
-    @Qualifier("accountServiceJaxRsImpl")
-    private AccountService accountServiceJaxRs;
+    @Qualifier("cutsomerAccountServiceJaxRsImpl")
+    private CustomerAccountService customerAccountServiceJaxRs;
 
     @Autowired
-    @Qualifier("accountServiceYaasImpl")
-    private AccountService accountServiceYaas;
+    @Qualifier("customerAccountServiceYaasImpl")
+    private CustomerAccountService customerAccountServiceYaas;
 
     @Before
     public void setUp() throws Exception {
@@ -39,16 +39,18 @@ public class AccountServiceTest {
     public void getAccountsWithSpring() throws Exception {
 
         System.out.println("111111111111111111111111111111111111111111111111111");
-        List<Account> s = accountServiceSpring.getAccounts();
-        System.out.println("Reponse: " + s);
+        List<CustomerAccount> s = customerAccountServiceSpring.getCustomerAccounts();
+        System.out.println("Response: " + s);
 
         System.out.println("222222222222222222222222222222222222222222222222222");
-        s = accountServiceSpring.getAccounts();
-        System.out.println("Reponse: " + s);
+        customerAccountServiceSpring.setTenant("tenanttwo");
+        s = customerAccountServiceSpring.getCustomerAccounts();
+        System.out.println("Response: " + s);
 
         System.out.println("333333333333333333333333333333333333333333333333333");
-        s = accountServiceSpring.getAccounts();
-        System.out.println("Reponse: " + s);
+        customerAccountServiceSpring.setTenant("tenantthree");
+        s = customerAccountServiceSpring.getCustomerAccounts();
+        System.out.println("Response: " + s);
     }
 
 
@@ -56,31 +58,35 @@ public class AccountServiceTest {
     public void getAccountsWithJaxRs() throws Exception {
 
         System.out.println("111111111111111111111111111111111111111111111111111");
-        List<Account> s = accountServiceJaxRs.getAccounts();
+        List<CustomerAccount> s = customerAccountServiceJaxRs.getCustomerAccounts();
         System.out.println("Reponse: " + s);
 
-/*        System.out.println("222222222222222222222222222222222222222222222222222");
-        s = accountServiceJaxRsImpl.getAccounts();
+        System.out.println("222222222222222222222222222222222222222222222222222");
+        customerAccountServiceJaxRs.setTenant("tenanttwo");
+        s = customerAccountServiceJaxRs.getCustomerAccounts();
         System.out.println("Reponse: " + s);
 
         System.out.println("333333333333333333333333333333333333333333333333333");
-        s = accountServiceJaxRsImpl.getAccounts();
-        System.out.println("Reponse: " + s);*/
+        customerAccountServiceJaxRs.setTenant("tenantthree");
+        s = customerAccountServiceJaxRs.getCustomerAccounts();
+        System.out.println("Reponse: " + s);
     }
 
     @Test
     public void getAccountsWithYaas() throws Exception {
 
         System.out.println("111111111111111111111111111111111111111111111111111");
-        List<Account> s = accountServiceYaas.getAccounts();
+        List<CustomerAccount> s = customerAccountServiceYaas.getCustomerAccounts();
         System.out.println("Reponse: " + s);
 
         System.out.println("222222222222222222222222222222222222222222222222222");
-        s = accountServiceYaas.getAccounts();
+        customerAccountServiceYaas.setTenant("tenanttwo");
+        s = customerAccountServiceYaas.getCustomerAccounts();
         System.out.println("Reponse: " + s);
 
         System.out.println("333333333333333333333333333333333333333333333333333");
-        s = accountServiceYaas.getAccounts();
+        customerAccountServiceYaas.setTenant("tenantthree");
+        s = customerAccountServiceYaas.getCustomerAccounts();
         System.out.println("Reponse: " + s);
     }
 

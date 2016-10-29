@@ -1,12 +1,13 @@
 package io.fdlessard.codesamples.yaas.service.impl;
 
-import io.fdlessard.codesamples.yaas.domain.Account;
-import io.fdlessard.codesamples.yaas.service.AccountService;
+import io.fdlessard.codesamples.yaas.domain.CustomerAccount;
+import io.fdlessard.codesamples.yaas.service.CustomerAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestOperations;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 
@@ -15,7 +16,8 @@ import java.util.List;
  */
 
 @Service
-public class AccountServiceSpringImpl implements AccountService {
+public class CustomerAccountServiceSpringImpl implements CustomerAccountService
+{
 
     @Value("${customer.url}")
     private String customerUrl;
@@ -23,16 +25,21 @@ public class AccountServiceSpringImpl implements AccountService {
     @Value("${tenant}")
     private String tenant;
 
-    @Autowired
+    @Resource(name = "restTemplate")
     private RestOperations restTemplate;
 
 
     @Override
-    public List<Account> getAccounts() {
+    public void setTenant(String tenant) {
+        this.tenant = tenant;
+    }
+
+    @Override
+    public List<CustomerAccount> getCustomerAccounts() {
 
         String url = buildUrl();
 
-        List<Account> response = restTemplate.getForObject(url, List.class);
+        List<CustomerAccount> response = restTemplate.getForObject(url, List.class);
 
         return response;
     }
