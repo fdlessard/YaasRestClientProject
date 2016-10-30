@@ -9,7 +9,5 @@ import java.util.List;
  */
 public interface CustomerAccountService {
 
-    void setTenant(String s);
-
     List<CustomerAccount> getCustomerAccounts();
 }

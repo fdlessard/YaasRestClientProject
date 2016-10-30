@@ -11,8 +11,11 @@ import io.fdlessard.codesamples.yaas.service.CustomerAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestOperations;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.annotation.Resource;
 import javax.ws.rs.core.Response;
@@ -38,19 +41,12 @@ public class CustomerAccountServiceYaasImpl implements CustomerAccountService
     @Autowired
     private AuthorizedExecutionTemplate authorizedExecutionTemplate;
 
-    //@Autowired
-    //@Qualifier("yaasRestTemplate")
-    @Resource(name = "yaasRestTemplate")
-    private RestOperations yaasRestTemplate;
+    @Resource(name = "customerAccountServiceYaasRestTemplate")
+    private RestOperations customerAccountServiceYaasRestTemplate;
 
-    @Override
-    public void setTenant(String tenant) {
-        this.tenant = tenant;
-    }
 
     @Override
     public List<CustomerAccount> getCustomerAccounts() {
-
 
         String[] splitScopes = scopes.split(",");
 
@@ -65,7 +61,7 @@ public class CustomerAccountServiceYaasImpl implements CustomerAccountService
                         // execute requests to other YaaS services with the given token in the "Authorization" header
                         // return Response object
 
-                        List<CustomerAccount> accounts = yaasRestTemplate.getForObject(URI.create(buildUrl()), List.class);
+                        List<CustomerAccount> accounts = customerAccountServiceYaasRestTemplate.getForObject(URI.create(buildUrl()), List.class);
 
                         return accounts;
 
@@ -76,7 +72,7 @@ public class CustomerAccountServiceYaasImpl implements CustomerAccountService
     }
 
     private String buildUrl() {
-        return customerUrl + "/" + tenant + "/customers";
+        return UriComponentsBuilder.fromUriString(customerUrl).buildAndExpand(tenant).toUriString();
     }
 
 }

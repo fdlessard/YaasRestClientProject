@@ -1,4 +1,4 @@
-package io.fdlessard.codesamples.yaas.service.impl;
+package io.fdlessard.codesamples.yaas.service.interceptor;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;

@@ -4,8 +4,8 @@ import com.sap.cloud.yaas.servicesdk.authorization.AccessTokenProvider;
 import com.sap.cloud.yaas.servicesdk.authorization.cache.SimpleCachingProviderWrapper;
 import com.sap.cloud.yaas.servicesdk.authorization.integration.AuthorizedExecutionTemplate;
 import com.sap.cloud.yaas.servicesdk.authorization.protocol.ClientCredentialsGrantProvider;
-import io.fdlessard.codesamples.yaas.service.impl.YaasRequestInterceptor;
-import org.springframework.beans.factory.annotation.Qualifier;
+import io.fdlessard.codesamples.yaas.service.errorhandler.CustomerAccountResponseErrorHandler;
+import io.fdlessard.codesamples.yaas.service.interceptor.YaasRequestInterceptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +29,8 @@ import java.util.List;
  * Created by fdlessard on 16-10-28.
  */
 @Configuration
-@PropertySource("classpath:yaas.properties")
+@PropertySource("classpath:application.properties")
+@PropertySource("classpath:yaasSpecific.properties")
 public class ApplicationConfiguration {
 
     @Value("${oauth2.token.url}")
@@ -44,25 +45,8 @@ public class ApplicationConfiguration {
     @Value("${scopes}")
     private String scopes;
 
-    @Bean(name = "restTemplate")
-    public RestOperations getRestTemplate() {
-
-        AccessTokenRequest atr = new DefaultAccessTokenRequest();
-        OAuth2RestTemplate restTemplate = new OAuth2RestTemplate(resource(), new DefaultOAuth2ClientContext(atr));
-
-        List<ClientHttpRequestInterceptor> listOfInterceptors = new ArrayList<>();
-        listOfInterceptors.add(new YaasRequestInterceptor());
-        restTemplate.setInterceptors(listOfInterceptors);
-        return restTemplate;
-    }
-
-    @Bean(name = "yaasRestTemplate")
-    public RestOperations getYaasRestTemplate() {
-        return new RestTemplate();
-    }
-
     @Bean
-    protected OAuth2ProtectedResourceDetails resource() {
+    protected OAuth2ProtectedResourceDetails getResourceDetails() {
 
         ClientCredentialsResourceDetails resource = new ClientCredentialsResourceDetails();
         resource.setAccessTokenUri(oauth2TokenUrl);
@@ -74,10 +58,27 @@ public class ApplicationConfiguration {
         return resource;
     }
 
-    @Bean
-    public AccessTokenProvider accessTokenProvider() {
+    @Bean(name = "customerAccountServiceRestTemplate")
+    public RestOperations getCustomerAccountServiceRestTemplate() {
 
-        final ClientCredentialsGrantProvider clientCredentialsGrantProvider = new ClientCredentialsGrantProvider();
+        AccessTokenRequest atr = new DefaultAccessTokenRequest();
+        OAuth2RestTemplate restTemplate = new OAuth2RestTemplate(getResourceDetails(), new DefaultOAuth2ClientContext(atr));
+
+        // Setting the interceptors to add YaaS specific http header properties
+        List<ClientHttpRequestInterceptor> listOfInterceptors = new ArrayList<>();
+        listOfInterceptors.add(new YaasRequestInterceptor());
+        restTemplate.setInterceptors(listOfInterceptors);
+
+        // Setting the response error handler for the rest template
+        restTemplate.setErrorHandler(new CustomerAccountResponseErrorHandler());
+
+        return restTemplate;
+    }
+
+    @Bean
+    public AccessTokenProvider getAccessTokenProvider() {
+
+        ClientCredentialsGrantProvider clientCredentialsGrantProvider = new ClientCredentialsGrantProvider();
 
         clientCredentialsGrantProvider.setClientId(oauth2ClientId);
         clientCredentialsGrantProvider.setClientSecret(oauth2ClientSecret);
@@ -87,8 +88,12 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-    public AuthorizedExecutionTemplate authorizedExecutionTemplate() {
-        return new AuthorizedExecutionTemplate(accessTokenProvider());
+    public AuthorizedExecutionTemplate getAuthorizedExecutionTemplate() {
+        return new AuthorizedExecutionTemplate(getAccessTokenProvider());
     }
 
+    @Bean(name = "customerAccountServiceYaasRestTemplate")
+    public RestOperations getYaasRestTemplate() {
+        return new RestTemplate();
+    }
 }

@@ -8,6 +8,7 @@ import io.fdlessard.codesamples.yaas.service.CustomerAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -35,11 +36,6 @@ public class CutsomerAccountServiceJaxRsImpl implements CustomerAccountService {
     private AccessTokenProvider accessTokenProvider;
 
     @Override
-    public void setTenant(String tenant) {
-        this.tenant = tenant;
-    }
-
-    @Override
     public List<CustomerAccount> getCustomerAccounts() {
 
         String[] splitScopes = scopes.split(",");
@@ -54,12 +50,10 @@ public class CutsomerAccountServiceJaxRsImpl implements CustomerAccountService {
                 .property(OAuth2Filter.PROPERTY_AUTHORIZATION_SCOPE, new AuthorizationScope(tenant, Arrays.asList(splitScopes)))
                 .get(accountListType);
 
-
         return customerAccounts;
     }
 
     private String buildUrl() {
-        return customerUrl + "/" + tenant + "/customers";
+        return UriComponentsBuilder.fromUriString(customerUrl).buildAndExpand(tenant).toUriString();
     }
-
 }
