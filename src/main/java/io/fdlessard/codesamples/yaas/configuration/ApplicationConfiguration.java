@@ -32,7 +32,7 @@ import java.util.List;
 @Configuration
 @PropertySource("classpath:application.properties")
 @PropertySource("classpath:yaasSpecific.properties")
-@PropertySource("classpath:HcpSpecific.properties")
+@PropertySource("classpath:hcpSpecific.properties")
 public class ApplicationConfiguration {
 
     @Value("${basic.auth.username}")
