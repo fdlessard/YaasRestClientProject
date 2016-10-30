@@ -1,6 +1,8 @@
 package io.fdlessard.codesamples.yaas.service.interceptor;
 
 import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
@@ -20,6 +22,8 @@ public class BasicAuthorizationRequestInterceptor implements ClientHttpRequestIn
     private static final String AUTHORIZATION_HEADER_PREFIX = "Basic ";
     private static final String CHARSET_NAME = "US-ASCII";
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(BasicAuthorizationRequestInterceptor.class);
+
     private String authorizationHeaderString;
 
     public BasicAuthorizationRequestInterceptor(String basicAuthUsername, String basicAuthPassword ) {
@@ -34,6 +38,8 @@ public class BasicAuthorizationRequestInterceptor implements ClientHttpRequestIn
 
         HttpHeaders headers = request.getHeaders();
         headers.set( AUTHORIZATION_HEADER_KEY, authorizationHeaderString );
+        // TODO ... put **** on the first few characters of passwords
+        LOGGER.debug("Added Authorization header {}", authorizationHeaderString);
 
         return clientHttpRequestExecution.execute(request, body);
     }
