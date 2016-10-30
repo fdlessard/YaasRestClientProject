@@ -17,7 +17,6 @@ import static org.apache.commons.lang3.math.NumberUtils.toInt;
  */
 public class YaasRequestInterceptor  implements ClientHttpRequestInterceptor {
 
-
     public static final String HEADER_REQUEST_ID = "hybris-request-id";
     public static final String HEADER_HOP = "hybris-hop";
 

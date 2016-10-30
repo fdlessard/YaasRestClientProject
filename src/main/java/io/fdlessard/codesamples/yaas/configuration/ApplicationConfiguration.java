@@ -5,6 +5,7 @@ import com.sap.cloud.yaas.servicesdk.authorization.cache.SimpleCachingProviderWr
 import com.sap.cloud.yaas.servicesdk.authorization.integration.AuthorizedExecutionTemplate;
 import com.sap.cloud.yaas.servicesdk.authorization.protocol.ClientCredentialsGrantProvider;
 import io.fdlessard.codesamples.yaas.service.errorhandler.CustomerAccountResponseErrorHandler;
+import io.fdlessard.codesamples.yaas.service.interceptor.BasicAuthorizationRequestInterceptor;
 import io.fdlessard.codesamples.yaas.service.interceptor.YaasRequestInterceptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -31,7 +32,14 @@ import java.util.List;
 @Configuration
 @PropertySource("classpath:application.properties")
 @PropertySource("classpath:yaasSpecific.properties")
+@PropertySource("classpath:HcpSpecific.properties")
 public class ApplicationConfiguration {
+
+    @Value("${basic.auth.username}")
+    private String basicAuthUsername;
+
+    @Value("${basic.auth.password}")
+    private String basicAuthPassword;
 
     @Value("${oauth2.token.url}")
     private String oauth2TokenUrl;
@@ -74,6 +82,24 @@ public class ApplicationConfiguration {
 
         return restTemplate;
     }
+
+
+    //@Bean( TODO later )
+    public RestOperations getCustomerAccountServiceRestTemplate2() {
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        // Setting the interceptors to add YaaS specific http header properties
+        List<ClientHttpRequestInterceptor> listOfInterceptors = new ArrayList<>();
+        listOfInterceptors.add(new BasicAuthorizationRequestInterceptor(basicAuthUsername, basicAuthPassword));
+        restTemplate.setInterceptors(listOfInterceptors);
+
+        // Setting the response error handler for the rest template
+        restTemplate.setErrorHandler(new CustomerAccountResponseErrorHandler());
+
+        return restTemplate;
+    }
+
 
     @Bean
     public AccessTokenProvider getAccessTokenProvider() {

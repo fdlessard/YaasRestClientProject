@@ -8,10 +8,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class YaasRestConnectionProjectApplication {
 
-
-
-
-
     public static void main(String[] args) {
         SpringApplication.run(YaasRestConnectionProjectApplication.class, args);
     }
