@@ -2,6 +2,9 @@ package io.fdlessard.codesamples.yaas.service.impl;
 
 import io.fdlessard.codesamples.yaas.domain.CustomerAccount;
 import io.fdlessard.codesamples.yaas.service.CustomerAccountService;
+import io.fdlessard.codesamples.yaas.service.interceptor.YaasRequestInterceptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestOperations;
@@ -17,6 +20,9 @@ import java.util.List;
 
 @Service
 public class CustomerAccountServiceSpringImpl implements CustomerAccountService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerAccountServiceSpringImpl.class);
+
     @Value("${customer.url}")
     private String customerUrl;
 
@@ -29,6 +35,8 @@ public class CustomerAccountServiceSpringImpl implements CustomerAccountService 
 
     @Override
     public List<CustomerAccount> getCustomerAccounts() {
+
+        LOGGER.debug("getCustomerAccounts()");
 
         return customerAccountServiceRestTemplate.getForObject(buildUrl(), List.class, tenant);
     }

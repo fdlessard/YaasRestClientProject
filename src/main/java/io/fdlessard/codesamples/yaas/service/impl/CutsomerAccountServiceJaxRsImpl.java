@@ -5,6 +5,8 @@ import com.sap.cloud.yaas.servicesdk.authorization.AuthorizationScope;
 import com.sap.cloud.yaas.servicesdk.authorization.integration.jaxrs.OAuth2Filter;
 import io.fdlessard.codesamples.yaas.domain.CustomerAccount;
 import io.fdlessard.codesamples.yaas.service.CustomerAccountService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,8 @@ import java.util.List;
 @Service
 public class CutsomerAccountServiceJaxRsImpl implements CustomerAccountService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CutsomerAccountServiceJaxRsImpl.class);
+
     @Value("${customer.url}")
     private String customerUrl;
 
@@ -37,6 +41,8 @@ public class CutsomerAccountServiceJaxRsImpl implements CustomerAccountService {
 
     @Override
     public List<CustomerAccount> getCustomerAccounts() {
+
+        LOGGER.debug("getCustomerAccounts()");
 
         String[] splitScopes = scopes.split(",");
         final OAuth2Filter oAuth2Filter = new OAuth2Filter(accessTokenProvider, new AuthorizationScope(tenant, Arrays.asList(splitScopes)), 1);

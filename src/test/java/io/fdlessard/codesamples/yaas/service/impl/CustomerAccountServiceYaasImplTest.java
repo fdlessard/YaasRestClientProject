@@ -20,7 +20,6 @@ import static org.junit.Assert.*;
 @SpringBootTest()
 public class CustomerAccountServiceYaasImplTest {
 
-
     @Autowired
     @Qualifier("customerAccountServiceYaasImpl")
     private CustomerAccountService customerAccountServiceYaas;

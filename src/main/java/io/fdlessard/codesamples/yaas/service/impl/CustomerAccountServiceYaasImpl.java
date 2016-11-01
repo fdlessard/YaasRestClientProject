@@ -8,20 +8,31 @@ import com.sap.cloud.yaas.servicesdk.authorization.integration.AuthorizedExecuti
 import com.sap.cloud.yaas.servicesdk.authorization.integration.AuthorizedExecutionTemplate;
 import io.fdlessard.codesamples.yaas.domain.CustomerAccount;
 import io.fdlessard.codesamples.yaas.service.CustomerAccountService;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpRequest;
+import org.springframework.http.*;
+
+
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestOperations;
+import org.springframework.web.util.HtmlUtils;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.annotation.Resource;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 /**
  * Created by fdlessard on 16-10-27.
@@ -29,6 +40,8 @@ import java.util.List;
 @Service
 public class CustomerAccountServiceYaasImpl implements CustomerAccountService
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerAccountServiceYaasImpl.class);
+
     @Value("${customer.url}")
     private String customerUrl;
 
@@ -48,6 +61,11 @@ public class CustomerAccountServiceYaasImpl implements CustomerAccountService
     @Override
     public List<CustomerAccount> getCustomerAccounts() {
 
+        LOGGER.debug("getCustomerAccounts()");
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+
         String[] splitScopes = scopes.split(",");
 
         final List<CustomerAccount> response = authorizedExecutionTemplate.executeAuthorized(
@@ -60,10 +78,12 @@ public class CustomerAccountServiceYaasImpl implements CustomerAccountService
                     {
                         // execute requests to other YaaS services with the given token in the "Authorization" header
                         // return Response object
+                        String authorization = token.getType() + " " + token.getValue();
+                        httpHeaders.add(HttpHeaders.AUTHORIZATION, token.getType() + " " + token.getValue());
+                        HttpEntity<String> requestEntity = new HttpEntity<>(StringUtils.EMPTY, httpHeaders);
+                        ResponseEntity<List> response =  customerAccountServiceYaasRestTemplate.exchange(URI.create(buildUrl()), HttpMethod.GET, requestEntity, List.class);
 
-                        List<CustomerAccount> accounts = customerAccountServiceYaasRestTemplate.getForObject(URI.create(buildUrl()), List.class);
-
-                        return accounts;
+                        return response.getBody();
 
                     }
                 });

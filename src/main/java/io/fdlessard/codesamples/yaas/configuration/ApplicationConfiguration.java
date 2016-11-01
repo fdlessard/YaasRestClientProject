@@ -20,7 +20,9 @@ import org.springframework.security.oauth2.client.token.DefaultAccessTokenReques
 import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.filter.CommonsRequestLoggingFilter;
 
+import javax.servlet.Filter;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -122,4 +124,5 @@ public class ApplicationConfiguration {
     public RestOperations getYaasRestTemplate() {
         return new RestTemplate();
     }
+
 }
