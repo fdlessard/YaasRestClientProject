@@ -1,8 +1,7 @@
-package io.fdlessard.codesamples.yaas.service.impl;
+package io.fdlessard.codesamples.yaas.services.impl;
 
 import io.fdlessard.codesamples.yaas.domain.CustomerAccount;
-import io.fdlessard.codesamples.yaas.service.CustomerAccountService;
-import io.fdlessard.codesamples.yaas.service.interceptor.YaasRequestInterceptor;
+import io.fdlessard.codesamples.yaas.services.CustomerAccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,4 +1,4 @@
-package io.fdlessard.codesamples.yaas.service;
+package io.fdlessard.codesamples.yaas.services;
 
 import io.fdlessard.codesamples.yaas.domain.CustomerAccount;
 

@@ -1,10 +1,10 @@
-package io.fdlessard.codesamples.yaas.service.impl;
+package io.fdlessard.codesamples.yaas.services.impl;
 
 import com.sap.cloud.yaas.servicesdk.authorization.AccessTokenProvider;
 import com.sap.cloud.yaas.servicesdk.authorization.AuthorizationScope;
 import com.sap.cloud.yaas.servicesdk.authorization.integration.jaxrs.OAuth2Filter;
 import io.fdlessard.codesamples.yaas.domain.CustomerAccount;
-import io.fdlessard.codesamples.yaas.service.CustomerAccountService;
+import io.fdlessard.codesamples.yaas.services.CustomerAccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

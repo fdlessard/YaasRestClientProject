@@ -1,18 +1,16 @@
-package io.fdlessard.codesamples.yaas.service.impl;
+package io.fdlessard.codesamples.yaas.services.impl;
 
 import com.sap.cloud.yaas.servicesdk.authorization.AccessToken;
 import com.sap.cloud.yaas.servicesdk.authorization.AuthorizationScope;
 import com.sap.cloud.yaas.servicesdk.authorization.DiagnosticContext;
-import com.sap.cloud.yaas.servicesdk.authorization.integration.AccessTokenInvalidException;
 import com.sap.cloud.yaas.servicesdk.authorization.integration.AuthorizedExecutionCallback;
 import com.sap.cloud.yaas.servicesdk.authorization.integration.AuthorizedExecutionTemplate;
 import io.fdlessard.codesamples.yaas.domain.CustomerAccount;
-import io.fdlessard.codesamples.yaas.service.CustomerAccountService;
+import io.fdlessard.codesamples.yaas.services.CustomerAccountService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 
@@ -21,18 +19,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestOperations;
-import org.springframework.web.util.HtmlUtils;
-import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.annotation.Resource;
-import javax.ws.rs.core.*;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 /**
  * Created by fdlessard on 16-10-27.

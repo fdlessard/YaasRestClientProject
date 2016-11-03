@@ -4,9 +4,9 @@ import com.sap.cloud.yaas.servicesdk.authorization.AccessTokenProvider;
 import com.sap.cloud.yaas.servicesdk.authorization.cache.SimpleCachingProviderWrapper;
 import com.sap.cloud.yaas.servicesdk.authorization.integration.AuthorizedExecutionTemplate;
 import com.sap.cloud.yaas.servicesdk.authorization.protocol.ClientCredentialsGrantProvider;
-import io.fdlessard.codesamples.yaas.service.errorhandler.CustomerAccountResponseErrorHandler;
-import io.fdlessard.codesamples.yaas.service.interceptor.BasicAuthorizationRequestInterceptor;
-import io.fdlessard.codesamples.yaas.service.interceptor.YaasRequestInterceptor;
+import io.fdlessard.codesamples.yaas.services.errorhandler.CustomerAccountResponseErrorHandler;
+import io.fdlessard.codesamples.yaas.services.interceptor.BasicAuthorizationRequestInterceptor;
+import io.fdlessard.codesamples.yaas.services.interceptor.YaasRequestInterceptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,9 +20,7 @@ import org.springframework.security.oauth2.client.token.DefaultAccessTokenReques
 import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.filter.CommonsRequestLoggingFilter;
 
-import javax.servlet.Filter;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;

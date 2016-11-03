@@ -1,4 +1,4 @@
-package io.fdlessard.codesamples.yaas.service.interceptor;
+package io.fdlessard.codesamples.yaas.services.interceptor;
 
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
