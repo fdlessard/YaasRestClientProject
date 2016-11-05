@@ -14,7 +14,7 @@ import java.io.IOException;
 public class CustomerAccountResponseErrorHandler implements ResponseErrorHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomerAccountResponseErrorHandler.class);
-    
+
     @Override
     public void handleError(ClientHttpResponse response) throws IOException {
         LOGGER.error("Response error: {} {}", response.getStatusCode(), response.getStatusText());

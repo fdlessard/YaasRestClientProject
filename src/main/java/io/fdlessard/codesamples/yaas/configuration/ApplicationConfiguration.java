@@ -4,8 +4,11 @@ import com.sap.cloud.yaas.servicesdk.authorization.AccessTokenProvider;
 import com.sap.cloud.yaas.servicesdk.authorization.cache.SimpleCachingProviderWrapper;
 import com.sap.cloud.yaas.servicesdk.authorization.integration.AuthorizedExecutionTemplate;
 import com.sap.cloud.yaas.servicesdk.authorization.protocol.ClientCredentialsGrantProvider;
+import io.fdlessard.codesamples.yaas.properties.BasicAuthProperties;
+import io.fdlessard.codesamples.yaas.properties.OAuth2Properties;
 import io.fdlessard.codesamples.yaas.services.errorhandler.CustomerAccountResponseErrorHandler;
 import io.fdlessard.codesamples.yaas.services.interceptor.YaasRequestInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,33 +38,20 @@ import java.util.List;
 @PropertySource("classpath:hcpSpecific.properties")
 public class ApplicationConfiguration {
 
-    @Value("${basic.auth.username}")
-    private String basicAuthUsername;
+    @Autowired
+    private BasicAuthProperties basicAuthProperties;
 
-    @Value("${basic.auth.password}")
-    private String basicAuthPassword;
-
-    @Value("${oauth2.token.url}")
-    private String oauth2TokenUrl;
-
-    @Value("${oauth2.client.id}")
-    private String oauth2ClientId;
-
-    @Value("${oauth2.client.secret}")
-    private String oauth2ClientSecret;
-
-    @Value("${scopes}")
-    private String scopes;
+    @Autowired
+    private OAuth2Properties oAuth2Properties;
 
     @Bean
     protected OAuth2ProtectedResourceDetails getResourceDetails() {
 
         ClientCredentialsResourceDetails resource = new ClientCredentialsResourceDetails();
-        resource.setAccessTokenUri(oauth2TokenUrl);
-        resource.setClientId(oauth2ClientId);
-        resource.setClientSecret(oauth2ClientSecret);
-        String[] splitScopes = scopes.split(",");
-        resource.setScope(Arrays.asList(splitScopes));
+        resource.setAccessTokenUri(oAuth2Properties.getOauth2().getTokenUrl());
+        resource.setClientId(oAuth2Properties.getOauth2().getClient().getId());
+        resource.setClientSecret(oAuth2Properties.getOauth2().getClient().getSecret());
+        resource.setScope(oAuth2Properties.getScopes());
 
         return resource;
     }
@@ -90,7 +80,7 @@ public class ApplicationConfiguration {
 
         // Setting the interceptors to add YaaS specific http header properties
         List<ClientHttpRequestInterceptor> listOfInterceptors = new ArrayList<>();
-        listOfInterceptors.add(new BasicAuthorizationInterceptor(basicAuthUsername, basicAuthPassword));
+        listOfInterceptors.add(new BasicAuthorizationInterceptor(basicAuthProperties.getBasicAuthUsername(), basicAuthProperties.getBasicAuthPassword()));
         restTemplate.setInterceptors(listOfInterceptors);
 
         // Setting the response error handler for the rest template
@@ -104,9 +94,9 @@ public class ApplicationConfiguration {
 
         ClientCredentialsGrantProvider clientCredentialsGrantProvider = new ClientCredentialsGrantProvider();
 
-        clientCredentialsGrantProvider.setClientId(oauth2ClientId);
-        clientCredentialsGrantProvider.setClientSecret(oauth2ClientSecret);
-        clientCredentialsGrantProvider.setTokenEndpointUri(URI.create(oauth2TokenUrl));
+        clientCredentialsGrantProvider.setClientId(oAuth2Properties.getOauth2().getClient().getId());
+        clientCredentialsGrantProvider.setClientSecret(oAuth2Properties.getOauth2().getClient().getSecret());
+        clientCredentialsGrantProvider.setTokenEndpointUri(URI.create(oAuth2Properties.getOauth2().getTokenUrl()));
 
         return new SimpleCachingProviderWrapper(clientCredentialsGrantProvider);
     }
