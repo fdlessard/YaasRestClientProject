@@ -5,13 +5,13 @@ import com.sap.cloud.yaas.servicesdk.authorization.cache.SimpleCachingProviderWr
 import com.sap.cloud.yaas.servicesdk.authorization.integration.AuthorizedExecutionTemplate;
 import com.sap.cloud.yaas.servicesdk.authorization.protocol.ClientCredentialsGrantProvider;
 import io.fdlessard.codesamples.yaas.services.errorhandler.CustomerAccountResponseErrorHandler;
-import io.fdlessard.codesamples.yaas.services.interceptor.BasicAuthorizationRequestInterceptor;
 import io.fdlessard.codesamples.yaas.services.interceptor.YaasRequestInterceptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
@@ -83,7 +83,6 @@ public class ApplicationConfiguration {
         return restTemplate;
     }
 
-
     //@Bean( TODO later )
     public RestOperations getCustomerAccountServiceRestTemplate2() {
 
@@ -91,7 +90,7 @@ public class ApplicationConfiguration {
 
         // Setting the interceptors to add YaaS specific http header properties
         List<ClientHttpRequestInterceptor> listOfInterceptors = new ArrayList<>();
-        listOfInterceptors.add(new BasicAuthorizationRequestInterceptor(basicAuthUsername, basicAuthPassword));
+        listOfInterceptors.add(new BasicAuthorizationInterceptor(basicAuthUsername, basicAuthPassword));
         restTemplate.setInterceptors(listOfInterceptors);
 
         // Setting the response error handler for the rest template
@@ -99,7 +98,6 @@ public class ApplicationConfiguration {
 
         return restTemplate;
     }
-
 
     @Bean
     public AccessTokenProvider getAccessTokenProvider() {
