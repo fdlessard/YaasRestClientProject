@@ -17,7 +17,7 @@ public class OAuth2Properties {
 
     @Value("#{'${scopes}'.split(',')}")
     private List<String> scopes;
-    
+
     private Oauth2 oauth2;
 
     public String getTenant() {
