@@ -25,14 +25,16 @@ public class CustomerAccountServiceYaasImplTest {
     @Test
     public void getAccountsWithYaas() throws Exception {
 
-        printSeparatorLine("1");
+        printSeparatorLine("-");
         List<CustomerAccount> s = customerAccountServiceYaas.getCustomerAccounts();
-        System.out.println("Reponse: " + s);
+        System.out.println("Response: " + s);
+        printSeparatorLine("-");
     }
 
 
     private void printSeparatorLine(String pattern) {
         String repeated = new String(new char[80]).replace("\0", pattern);
+        System.out.println(repeated);
     }
 
 }
