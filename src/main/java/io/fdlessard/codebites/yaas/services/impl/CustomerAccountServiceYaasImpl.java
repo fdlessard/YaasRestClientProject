@@ -1,23 +1,21 @@
-package io.fdlessard.codesamples.yaas.services.impl;
+package io.fdlessard.codebites.yaas.services.impl;
 
 import com.sap.cloud.yaas.servicesdk.authorization.AccessToken;
+import com.sap.cloud.yaas.servicesdk.authorization.AccessTokenRequestException;
 import com.sap.cloud.yaas.servicesdk.authorization.AuthorizationScope;
 import com.sap.cloud.yaas.servicesdk.authorization.DiagnosticContext;
 import com.sap.cloud.yaas.servicesdk.authorization.integration.AuthorizedExecutionCallback;
 import com.sap.cloud.yaas.servicesdk.authorization.integration.AuthorizedExecutionTemplate;
-import io.fdlessard.codesamples.yaas.domain.CustomerAccount;
-import io.fdlessard.codesamples.yaas.services.CustomerAccountService;
+import io.fdlessard.codebites.yaas.domain.CustomerAccount;
+import io.fdlessard.codebites.yaas.services.CustomerAccountService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
-
-
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -30,8 +28,7 @@ import java.util.List;
  * Created by fdlessard on 16-10-27.
  */
 @Service
-public class CustomerAccountServiceYaasImpl implements CustomerAccountService
-{
+public class CustomerAccountServiceYaasImpl implements CustomerAccountService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomerAccountServiceYaasImpl.class);
 
     @Value("${customer.url}")
@@ -60,25 +57,33 @@ public class CustomerAccountServiceYaasImpl implements CustomerAccountService
 
         String[] splitScopes = scopes.split(",");
 
-        final List<CustomerAccount> response = authorizedExecutionTemplate.executeAuthorized(
-                new AuthorizationScope(tenant, Arrays.asList(splitScopes)),
-                new DiagnosticContext("requestId", 0),
-                new AuthorizedExecutionCallback<List<CustomerAccount>>()
-                {
-                    @Override
-                    public List<CustomerAccount> execute(final AccessToken token)
-                    {
-                        // execute requests to other YaaS services with the given token in the "Authorization" header
-                        // return Response object
-                        String authorization = token.getType() + " " + token.getValue();
-                        httpHeaders.add(HttpHeaders.AUTHORIZATION, token.getType() + " " + token.getValue());
-                        HttpEntity<String> requestEntity = new HttpEntity<>(StringUtils.EMPTY, httpHeaders);
-                        ResponseEntity<List> response =  customerAccountServiceYaasRestTemplate.exchange(URI.create(buildUrl()), HttpMethod.GET, requestEntity, List.class);
+        List<CustomerAccount> response = null;
 
-                        return response.getBody();
+        try {
 
-                    }
-                });
+            response = authorizedExecutionTemplate.executeAuthorized(
+
+                    new AuthorizationScope(tenant, Arrays.asList(splitScopes)),
+                    new DiagnosticContext("requestId", 0),
+                    new AuthorizedExecutionCallback<List<CustomerAccount>>() {
+                        @Override
+                        public List<CustomerAccount> execute(final AccessToken token) {
+                            // execute requests to other YaaS services with the given token in the "Authorization" header
+                            // return Response object
+                            String authorization = token.getType() + " " + token.getValue();
+                            httpHeaders.add(HttpHeaders.AUTHORIZATION, token.getType() + " " + token.getValue());
+                            HttpEntity<String> requestEntity = new HttpEntity<>(StringUtils.EMPTY, httpHeaders);
+                            ResponseEntity<List> response = null;
+                            response = customerAccountServiceYaasRestTemplate.exchange(URI.create(buildUrl()), HttpMethod.GET, requestEntity, List.class);
+                            return response.getBody();
+                        }
+                    });
+
+        } catch (HttpClientErrorException e) {
+            LOGGER.info("Oups");
+        } catch (AccessTokenRequestException ae) {
+            LOGGER.info("Oups");
+        }
 
         return response;
     }

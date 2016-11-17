@@ -1,7 +1,7 @@
-package io.fdlessard.codesamples.yaas.services.impl;
+package io.fdlessard.codebites.yaas.services.impl;
 
-import io.fdlessard.codesamples.yaas.domain.CustomerAccount;
-import io.fdlessard.codesamples.yaas.services.CustomerAccountService;
+import io.fdlessard.codebites.yaas.domain.CustomerAccount;
+import io.fdlessard.codebites.yaas.services.CustomerAccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,9 +36,11 @@ public class CustomerAccountServiceSpringImpl implements CustomerAccountService 
     public List<CustomerAccount> getCustomerAccounts() {
 
         LOGGER.debug("getCustomerAccounts()");
-
-        return customerAccountServiceRestTemplate.getForObject(buildUrl(), List.class, tenant);
+        return customerAccountServiceRestTemplate.getForObject(buildUrl(), List.class);
     }
+
+
+
 
     private String buildUrl() {
         return UriComponentsBuilder.fromUriString(customerUrl).buildAndExpand(tenant).toUriString();

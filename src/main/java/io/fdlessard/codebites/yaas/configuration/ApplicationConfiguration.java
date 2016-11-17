@@ -1,15 +1,14 @@
-package io.fdlessard.codesamples.yaas.configuration;
+package io.fdlessard.codebites.yaas.configuration;
 
 import com.sap.cloud.yaas.servicesdk.authorization.AccessTokenProvider;
 import com.sap.cloud.yaas.servicesdk.authorization.cache.SimpleCachingProviderWrapper;
 import com.sap.cloud.yaas.servicesdk.authorization.integration.AuthorizedExecutionTemplate;
 import com.sap.cloud.yaas.servicesdk.authorization.protocol.ClientCredentialsGrantProvider;
-import io.fdlessard.codesamples.yaas.properties.BasicAuthProperties;
-import io.fdlessard.codesamples.yaas.properties.OAuth2Properties;
-import io.fdlessard.codesamples.yaas.services.errorhandler.CustomerAccountResponseErrorHandler;
-import io.fdlessard.codesamples.yaas.services.interceptor.YaasRequestInterceptor;
+import io.fdlessard.codebites.yaas.properties.OAuth2Properties;
+import io.fdlessard.codebites.yaas.services.interceptor.YaasRequestInterceptor;
+import io.fdlessard.codebites.yaas.properties.BasicAuthProperties;
+import io.fdlessard.codebites.yaas.services.errorhandler.CustomerAccountResponseErrorHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -26,7 +25,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -43,6 +41,7 @@ public class ApplicationConfiguration {
 
     @Autowired
     private OAuth2Properties oAuth2Properties;
+
 
     @Bean
     protected OAuth2ProtectedResourceDetails getResourceDetails() {
@@ -88,6 +87,11 @@ public class ApplicationConfiguration {
 
         return restTemplate;
     }
+
+
+
+
+
 
     @Bean
     public AccessTokenProvider getAccessTokenProvider() {

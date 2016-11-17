@@ -1,4 +1,4 @@
-package io.fdlessard.codesamples.yaas.services.errorhandler;
+package io.fdlessard.codebites.yaas.services.errorhandler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

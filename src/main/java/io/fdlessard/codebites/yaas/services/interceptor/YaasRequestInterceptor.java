@@ -1,4 +1,4 @@
-package io.fdlessard.codesamples.yaas.services.interceptor;
+package io.fdlessard.codebites.yaas.services.interceptor;
 
 import com.sap.cloud.yaas.servicesdk.patternsupport.traits.YaasAwareTrait;
 import org.apache.commons.lang3.StringUtils;

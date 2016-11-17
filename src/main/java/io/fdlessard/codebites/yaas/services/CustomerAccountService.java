@@ -1,6 +1,6 @@
-package io.fdlessard.codesamples.yaas.services;
+package io.fdlessard.codebites.yaas.services;
 
-import io.fdlessard.codesamples.yaas.domain.CustomerAccount;
+import io.fdlessard.codebites.yaas.domain.CustomerAccount;
 
 import java.util.List;
 

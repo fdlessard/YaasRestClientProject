@@ -1,7 +1,7 @@
-package io.fdlessard.codesamples.yaas.services.impl;
+package io.fdlessard.codebites.yaas.services.impl;
 
-import io.fdlessard.codesamples.yaas.domain.CustomerAccount;
-import io.fdlessard.codesamples.yaas.services.CustomerAccountService;
+import io.fdlessard.codebites.yaas.domain.CustomerAccount;
+import io.fdlessard.codebites.yaas.services.CustomerAccountService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

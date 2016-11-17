@@ -1,4 +1,4 @@
-package io.fdlessard.codesamples.yaas.properties;
+package io.fdlessard.codebites.yaas.properties;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;

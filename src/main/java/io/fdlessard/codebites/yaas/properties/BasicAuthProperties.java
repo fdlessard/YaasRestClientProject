@@ -1,4 +1,4 @@
-package io.fdlessard.codesamples.yaas.properties;
+package io.fdlessard.codebites.yaas.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package io.fdlessard.codesamples.yaas.domain;
+package io.fdlessard.codebites.yaas.domain;
 
 /**
  * Created by fdlessard on 16-10-27.

@@ -1,4 +1,4 @@
-package io.fdlessard.codesamples.yaas;
+package io.fdlessard.codebites.yaas;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

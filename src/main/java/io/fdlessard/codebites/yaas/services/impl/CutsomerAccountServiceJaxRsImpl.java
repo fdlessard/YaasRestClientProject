@@ -1,10 +1,10 @@
-package io.fdlessard.codesamples.yaas.services.impl;
+package io.fdlessard.codebites.yaas.services.impl;
 
 import com.sap.cloud.yaas.servicesdk.authorization.AccessTokenProvider;
 import com.sap.cloud.yaas.servicesdk.authorization.AuthorizationScope;
 import com.sap.cloud.yaas.servicesdk.authorization.integration.jaxrs.OAuth2Filter;
-import io.fdlessard.codesamples.yaas.domain.CustomerAccount;
-import io.fdlessard.codesamples.yaas.services.CustomerAccountService;
+import io.fdlessard.codebites.yaas.domain.CustomerAccount;
+import io.fdlessard.codebites.yaas.services.CustomerAccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.GenericType;
@@ -48,13 +49,19 @@ public class CutsomerAccountServiceJaxRsImpl implements CustomerAccountService {
         final OAuth2Filter oAuth2Filter = new OAuth2Filter(accessTokenProvider, new AuthorizationScope(tenant, Arrays.asList(splitScopes)), 1);
         final Client client = ClientBuilder.newClient().register(oAuth2Filter);
 
-        GenericType<List<CustomerAccount>> accountListType = new GenericType<List<CustomerAccount>>() {
-        };
+        GenericType<List<CustomerAccount>> accountListType = new GenericType<List<CustomerAccount>>() { };
 
-        List<CustomerAccount> customerAccounts = client.target(buildUrl())
-                .request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE)
-                .property(OAuth2Filter.PROPERTY_AUTHORIZATION_SCOPE, new AuthorizationScope(tenant, Arrays.asList(splitScopes)))
-                .get(accountListType);
+        List<CustomerAccount> customerAccounts = null;
+
+        try {
+            customerAccounts = client.target(buildUrl())
+                    .request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE)
+                    .property(OAuth2Filter.PROPERTY_AUTHORIZATION_SCOPE, new AuthorizationScope(tenant, Arrays.asList(splitScopes)))
+                    .get(accountListType);
+
+        } catch (NotFoundException e) {
+            LOGGER.info("Oups");
+        }
 
         return customerAccounts;
     }
