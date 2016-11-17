@@ -29,14 +29,6 @@ public class CutsomerAccountServiceJaxRsImplTest {
         printSeparatorLine("1");
         List<CustomerAccount> s = customerAccountServiceJaxRs.getCustomerAccounts();
         System.out.println("Reponse: " + s);
-
-        printSeparatorLine("2");
-        s = customerAccountServiceJaxRs.getCustomerAccounts();
-        System.out.println("Reponse: " + s);
-
-        printSeparatorLine("3");
-        s = customerAccountServiceJaxRs.getCustomerAccounts();
-        System.out.println("Reponse: " + s);
     }
 
     private void printSeparatorLine(String pattern) {

@@ -72,6 +72,9 @@ public class ApplicationConfiguration {
         return restTemplate;
     }
 
+
+
+
     //@Bean( TODO later )
     public RestOperations getCustomerAccountServiceRestTemplate2() {
 

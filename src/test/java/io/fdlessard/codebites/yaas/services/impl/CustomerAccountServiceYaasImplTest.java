@@ -28,14 +28,6 @@ public class CustomerAccountServiceYaasImplTest {
         printSeparatorLine("1");
         List<CustomerAccount> s = customerAccountServiceYaas.getCustomerAccounts();
         System.out.println("Reponse: " + s);
-
-        printSeparatorLine("2");
-        s = customerAccountServiceYaas.getCustomerAccounts();
-        System.out.println("Reponse: " + s);
-
-        printSeparatorLine("3");
-        s = customerAccountServiceYaas.getCustomerAccounts();
-        System.out.println("Reponse: " + s);
     }
 
 

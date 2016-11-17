@@ -35,14 +35,6 @@ public class CustomerAccountServiceSpringImplTest {
         printSeparatorLine("1");
         List<CustomerAccount> s = customerAccountServiceSpring.getCustomerAccounts();
         System.out.println("Response: " + s);
-
-        printSeparatorLine("2");
-        s = customerAccountServiceSpring.getCustomerAccounts();
-        System.out.println("Response: " + s);
-
-        printSeparatorLine("3");
-        s = customerAccountServiceSpring.getCustomerAccounts();
-        System.out.println("Response: " + s);
     }
 
     private void printSeparatorLine(String pattern) {
