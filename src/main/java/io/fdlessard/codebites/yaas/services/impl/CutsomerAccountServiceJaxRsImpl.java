@@ -4,6 +4,7 @@ import com.sap.cloud.yaas.servicesdk.authorization.AccessTokenProvider;
 import com.sap.cloud.yaas.servicesdk.authorization.AuthorizationScope;
 import com.sap.cloud.yaas.servicesdk.authorization.integration.jaxrs.OAuth2Filter;
 import io.fdlessard.codebites.yaas.domain.CustomerAccount;
+import io.fdlessard.codebites.yaas.properties.CustomerAccountServiceProperties;
 import io.fdlessard.codebites.yaas.services.CustomerAccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,14 +29,8 @@ public class CutsomerAccountServiceJaxRsImpl implements CustomerAccountService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CutsomerAccountServiceJaxRsImpl.class);
 
-    @Value("${customer.url}")
-    private String customerUrl;
-
-    @Value("${scopes}")
-    private String scopes;
-
-    @Value("${tenant}")
-    private String tenant;
+    @Autowired
+    private CustomerAccountServiceProperties customerAccountServiceProperties;
 
     @Autowired
     private AccessTokenProvider accessTokenProvider;
@@ -45,8 +40,7 @@ public class CutsomerAccountServiceJaxRsImpl implements CustomerAccountService {
 
         LOGGER.debug("getCustomerAccounts()");
 
-        String[] splitScopes = scopes.split(",");
-        final OAuth2Filter oAuth2Filter = new OAuth2Filter(accessTokenProvider, new AuthorizationScope(tenant, Arrays.asList(splitScopes)), 1);
+        final OAuth2Filter oAuth2Filter = new OAuth2Filter(accessTokenProvider, new AuthorizationScope(customerAccountServiceProperties.getTenant(), customerAccountServiceProperties.getScopes()), 1);
         final Client client = ClientBuilder.newClient().register(oAuth2Filter);
 
         GenericType<List<CustomerAccount>> accountListType = new GenericType<List<CustomerAccount>>() { };
@@ -56,17 +50,17 @@ public class CutsomerAccountServiceJaxRsImpl implements CustomerAccountService {
         try {
             customerAccounts = client.target(buildUrl())
                     .request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE)
-                    .property(OAuth2Filter.PROPERTY_AUTHORIZATION_SCOPE, new AuthorizationScope(tenant, Arrays.asList(splitScopes)))
+                    .property(OAuth2Filter.PROPERTY_AUTHORIZATION_SCOPE, new AuthorizationScope(customerAccountServiceProperties.getTenant(), customerAccountServiceProperties.getScopes()))
                     .get(accountListType);
 
         } catch (NotFoundException e) {
-            LOGGER.info("Oups");
+            LOGGER.error("Problem in CutsomerAccountServiceJaxRsImpl()", e);
         }
 
         return customerAccounts;
     }
 
     private String buildUrl() {
-        return UriComponentsBuilder.fromUriString(customerUrl).buildAndExpand(tenant).toUriString();
+        return UriComponentsBuilder.fromUriString(customerAccountServiceProperties.getCustomerUrl()).buildAndExpand(customerAccountServiceProperties.getTenant()).toUriString();
     }
 }

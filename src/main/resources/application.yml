@@ -1,0 +1,76 @@
+logging:
+  level.org.apache.http: DEBUG
+  level.org.apache.http.headers: DEBUG
+  level.org.springframework: DEBUG
+  level.org.springframework.web: DEBUG
+  level.org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+
+CustomerAccountService:
+  tenant: tenanttwo
+  scopes: hybris.customer_read, hybris.customer_update
+  customerUrl: https://api.yaas.io/hybris/customer/v1/{tenant}/customers
+  oauth2:
+    tokenUrl: https://api.yaas.io/hybris/oauth2/v1/token
+    client:
+      id: RgBCu2uzXMXN8UKwg5CdEzgqmJuyIFl2
+      secret: uR3HLnuPeA5KbPBK
+  basicAuth:
+    username: toto
+    password: totopassword
+
+
+
+---
+
+spring:
+  profiles: development
+
+CustomerAccountService:
+  tenant: tenanttwo
+  scopes: hybris.customer_read, hybris.customer_update
+  customerUrl: https://api.yaas.io/hybris/customer/v1/{tenant}/customers
+  oauth2:
+    tokenUrl: https://api.yaas.io/hybris/oauth2/v1/token
+    client:
+      id: RgBCu2uzXMXN8UKwg5CdEzgqmJuyIFl2
+      secret: uR3HLnuPeA5KbPBK
+  basicAuth:
+    username: toto
+    password: totopassword
+
+---
+
+spring:
+    profiles: integration
+
+CustomerAccountService:
+  tenant: tenanttwo
+  scopes: hybris.customer_read, hybris.customer_update
+  customerUrl: https://api.yaas.io/hybris/customer/v1/{tenant}/customers
+  oauth2:
+    tokenUrl: https://api.yaas.io/hybris/oauth2/v1/token
+    client:
+      id: RgBCu2uzXMXN8UKwg5CdEzgqmJuyIFl2
+      secret: uR3HLnuPeA5KbPBK
+  basicAuth:
+    username: toto
+    password: totopassword
+
+
+---
+
+spring:
+  profiles: production
+
+CustomerAccountService:
+  tenant: tenanttwo
+  scopes: hybris.customer_read, hybris.customer_update
+  customerUrl: https://api.yaas.io/hybris/customer/v1/{tenant}/customers
+  oauth2:
+    tokenUrl: https://api.yaas.io/hybris/oauth2/v1/token
+    client:
+      id: RgBCu2uzXMXN8UKwg5CdEzgqmJuyIFl2
+      secret: uR3HLnuPeA5KbPBK
+  basicAuth:
+    username: toto
+    password: totopassword

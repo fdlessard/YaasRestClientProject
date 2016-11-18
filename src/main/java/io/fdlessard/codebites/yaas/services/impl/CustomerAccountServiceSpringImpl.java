@@ -1,9 +1,11 @@
 package io.fdlessard.codebites.yaas.services.impl;
 
 import io.fdlessard.codebites.yaas.domain.CustomerAccount;
+import io.fdlessard.codebites.yaas.properties.CustomerAccountServiceProperties;
 import io.fdlessard.codebites.yaas.services.CustomerAccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestOperations;
@@ -22,14 +24,13 @@ public class CustomerAccountServiceSpringImpl implements CustomerAccountService 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomerAccountServiceSpringImpl.class);
 
-    @Value("${customer.url}")
-    private String customerUrl;
-
-    @Value("${tenant}")
-    private String tenant;
-
-    @Resource(name = "customerAccountServiceRestTemplate")
+    @Autowired
+    private CustomerAccountServiceProperties customerAccountServiceProperties;
+    
+    @Autowired
     private RestOperations customerAccountServiceRestTemplate;
+
+
 
 
     @Override
@@ -43,7 +44,7 @@ public class CustomerAccountServiceSpringImpl implements CustomerAccountService 
 
 
     private String buildUrl() {
-        return UriComponentsBuilder.fromUriString(customerUrl).buildAndExpand(tenant).toUriString();
+        return UriComponentsBuilder.fromUriString(customerAccountServiceProperties.getCustomerUrl()).buildAndExpand(customerAccountServiceProperties.getTenant()).toUriString();
     }
 
 }

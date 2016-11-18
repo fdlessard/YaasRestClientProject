@@ -9,14 +9,17 @@ import java.util.List;
 /**
  * Created by fdlessard on 16-11-04.
  */
-@ConfigurationProperties(locations = "yaasSpecific.properties")
+@ConfigurationProperties(prefix = "CustomerAccountService")
 @Component
-public class OAuth2Properties {
-    
+public class CustomerAccountServiceProperties {
+
     private String tenant;
 
-    @Value("#{'${scopes}'.split(',')}")
     private List<String> scopes;
+
+    private String customerUrl;
+
+    private BasicAuth basicAuth;
 
     private Oauth2 oauth2;
 
@@ -36,6 +39,22 @@ public class OAuth2Properties {
         this.scopes = scopes;
     }
 
+    public String getCustomerUrl() {
+        return customerUrl;
+    }
+
+    public void setCustomerUrl(String customerUrl) {
+        this.customerUrl = customerUrl;
+    }
+
+    public BasicAuth getBasicAuth() {
+        return basicAuth;
+    }
+
+    public void setBasicAuth(BasicAuth basicAuth) {
+        this.basicAuth = basicAuth;
+    }
+
     public Oauth2 getOauth2() {
         return oauth2;
     }
@@ -44,9 +63,11 @@ public class OAuth2Properties {
         this.oauth2 = oauth2;
     }
 
+
     public static class Oauth2 {
 
         private String tokenUrl;
+
         private Client client;
 
         public String getTokenUrl() {
@@ -68,6 +89,7 @@ public class OAuth2Properties {
         public static class Client {
 
             private String id;
+
             private String secret;
 
             public String getId() {
@@ -87,4 +109,30 @@ public class OAuth2Properties {
             }
         }
     }
+
+
+    public static class BasicAuth {
+
+        private String username;
+
+        private String password;
+
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+    }
+
 }

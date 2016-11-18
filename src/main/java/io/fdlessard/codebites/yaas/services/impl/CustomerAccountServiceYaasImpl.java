@@ -7,6 +7,7 @@ import com.sap.cloud.yaas.servicesdk.authorization.DiagnosticContext;
 import com.sap.cloud.yaas.servicesdk.authorization.integration.AuthorizedExecutionCallback;
 import com.sap.cloud.yaas.servicesdk.authorization.integration.AuthorizedExecutionTemplate;
 import io.fdlessard.codebites.yaas.domain.CustomerAccount;
+import io.fdlessard.codebites.yaas.properties.CustomerAccountServiceProperties;
 import io.fdlessard.codebites.yaas.services.CustomerAccountService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -29,21 +30,16 @@ import java.util.List;
  */
 @Service
 public class CustomerAccountServiceYaasImpl implements CustomerAccountService {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomerAccountServiceYaasImpl.class);
 
-    @Value("${customer.url}")
-    private String customerUrl;
-
-    @Value("${tenant}")
-    private String tenant;
-
-    @Value("${scopes}")
-    private String scopes;
+    @Autowired
+    private CustomerAccountServiceProperties customerAccountServiceProperties;
 
     @Autowired
     private AuthorizedExecutionTemplate authorizedExecutionTemplate;
 
-    @Resource(name = "customerAccountServiceYaasRestTemplate")
+    @Autowired
     private RestOperations customerAccountServiceYaasRestTemplate;
 
 
@@ -55,15 +51,13 @@ public class CustomerAccountServiceYaasImpl implements CustomerAccountService {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 
-        String[] splitScopes = scopes.split(",");
-
         List<CustomerAccount> response = null;
 
         try {
 
             response = authorizedExecutionTemplate.executeAuthorized(
 
-                    new AuthorizationScope(tenant, Arrays.asList(splitScopes)),
+                    new AuthorizationScope(customerAccountServiceProperties.getTenant(), customerAccountServiceProperties.getScopes()),
                     new DiagnosticContext("requestId", 0),
                     new AuthorizedExecutionCallback<List<CustomerAccount>>() {
                         @Override
@@ -79,17 +73,15 @@ public class CustomerAccountServiceYaasImpl implements CustomerAccountService {
                         }
                     });
 
-        } catch (HttpClientErrorException e) {
-            LOGGER.info("Oups");
-        } catch (AccessTokenRequestException ae) {
-            LOGGER.info("Oups");
+        } catch (HttpClientErrorException | AccessTokenRequestException e) {
+            LOGGER.error("Problem in CustomerAccountServiceYaasImpl()", e);
         }
 
         return response;
     }
 
     private String buildUrl() {
-        return UriComponentsBuilder.fromUriString(customerUrl).buildAndExpand(tenant).toUriString();
+        return UriComponentsBuilder.fromUriString(customerAccountServiceProperties.getCustomerUrl()).buildAndExpand(customerAccountServiceProperties.getTenant()).toUriString();
     }
 
 }
