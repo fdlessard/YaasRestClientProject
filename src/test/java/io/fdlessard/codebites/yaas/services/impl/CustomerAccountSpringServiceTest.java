@@ -2,32 +2,34 @@ package io.fdlessard.codebites.yaas.services.impl;
 
 import io.fdlessard.codebites.yaas.domain.CustomerAccount;
 import io.fdlessard.codebites.yaas.services.CustomerAccountService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
 /**
- * Created by fdlessard on 16-10-29.
+ * Created by fdlessard on 16-10-24.
  */
 
 @RunWith(SpringRunner.class)
 @SpringBootTest()
-public class CutsomerAccountServiceJaxRsImplTest {
+@ActiveProfiles("SpringOAuth2Profile")
+public class CustomerAccountSpringServiceTest {
 
     @Autowired
-    @Qualifier("cutsomerAccountServiceJaxRsImpl")
-    private CustomerAccountService customerAccountServiceJaxRs;
+    private CustomerAccountService customerAccountService;
 
     @Test
-    public void getAccountsWithJaxRs() throws Exception {
+    public void getAccountsWithSpring() throws Exception {
 
         printSeparatorLine("-");
-        List<CustomerAccount> s = customerAccountServiceJaxRs.getCustomerAccounts();
+        List<CustomerAccount> s = customerAccountService.getCustomerAccounts();
         System.out.println("Response: " + s);
         printSeparatorLine("-");
     }

@@ -1,6 +1,5 @@
 package io.fdlessard.codebites.yaas.properties;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -9,17 +8,15 @@ import java.util.List;
 /**
  * Created by fdlessard on 16-11-04.
  */
-@ConfigurationProperties(prefix = "CustomerAccountService")
+@ConfigurationProperties(prefix = "CustomerAccountGateway")
 @Component
-public class CustomerAccountServiceProperties {
+public class CustomerAccountGatewayProperties {
 
     private String tenant;
 
     private List<String> scopes;
 
     private String customerUrl;
-
-    private BasicAuth basicAuth;
 
     private Oauth2 oauth2;
 
@@ -45,14 +42,6 @@ public class CustomerAccountServiceProperties {
 
     public void setCustomerUrl(String customerUrl) {
         this.customerUrl = customerUrl;
-    }
-
-    public BasicAuth getBasicAuth() {
-        return basicAuth;
-    }
-
-    public void setBasicAuth(BasicAuth basicAuth) {
-        this.basicAuth = basicAuth;
     }
 
     public Oauth2 getOauth2() {
@@ -109,30 +98,4 @@ public class CustomerAccountServiceProperties {
             }
         }
     }
-
-
-    public static class BasicAuth {
-
-        private String username;
-
-        private String password;
-
-
-        public String getUsername() {
-            return username;
-        }
-
-        public void setUsername(String username) {
-            this.username = username;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-    }
-
 }

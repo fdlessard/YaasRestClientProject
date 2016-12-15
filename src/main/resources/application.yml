@@ -5,7 +5,12 @@ logging:
   level.org.springframework.web: DEBUG
   level.org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
 
-CustomerAccountService:
+---
+
+spring:
+  profiles: YaasJaxRsClientProfile
+
+CustomerAccountGateway:
   tenant: tenanttwo
   scopes: hybris.customer_read, hybris.customer_update
   customerUrl: https://api.yaas.io/hybris/customer/v1/{tenant}/customers
@@ -14,18 +19,13 @@ CustomerAccountService:
     client:
       id: RgBCu2uzXMXN8UKwg5CdEzgqmJuyIFl2
       secret: uR3HLnuPeA5KbPBK
-  basicAuth:
-    username: toto
-    password: totopassword
-
-
 
 ---
 
 spring:
-  profiles: development
+    profiles: YaasAuthorizedTemplateProfile
 
-CustomerAccountService:
+CustomerAccountGateway:
   tenant: tenanttwo
   scopes: hybris.customer_read, hybris.customer_update
   customerUrl: https://api.yaas.io/hybris/customer/v1/{tenant}/customers
@@ -34,16 +34,13 @@ CustomerAccountService:
     client:
       id: RgBCu2uzXMXN8UKwg5CdEzgqmJuyIFl2
       secret: uR3HLnuPeA5KbPBK
-  basicAuth:
-    username: toto
-    password: totopassword
 
 ---
 
 spring:
-    profiles: integration
+  profiles: SpringOAuth2Profile
 
-CustomerAccountService:
+CustomerAccountGateway:
   tenant: tenanttwo
   scopes: hybris.customer_read, hybris.customer_update
   customerUrl: https://api.yaas.io/hybris/customer/v1/{tenant}/customers
@@ -52,25 +49,3 @@ CustomerAccountService:
     client:
       id: RgBCu2uzXMXN8UKwg5CdEzgqmJuyIFl2
       secret: uR3HLnuPeA5KbPBK
-  basicAuth:
-    username: toto
-    password: totopassword
-
-
----
-
-spring:
-  profiles: production
-
-CustomerAccountService:
-  tenant: tenanttwo
-  scopes: hybris.customer_read, hybris.customer_update
-  customerUrl: https://api.yaas.io/hybris/customer/v1/{tenant}/customers
-  oauth2:
-    tokenUrl: https://api.yaas.io/hybris/oauth2/v1/token
-    client:
-      id: RgBCu2uzXMXN8UKwg5CdEzgqmJuyIFl2
-      secret: uR3HLnuPeA5KbPBK
-  basicAuth:
-    username: toto
-    password: totopassword

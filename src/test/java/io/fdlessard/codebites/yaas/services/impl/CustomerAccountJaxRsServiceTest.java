@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
@@ -14,23 +15,23 @@ import java.util.List;
 /**
  * Created by fdlessard on 16-10-29.
  */
+
 @RunWith(SpringRunner.class)
 @SpringBootTest()
-public class CustomerAccountServiceYaasImplTest {
+@ActiveProfiles("YaasJaxRsClientProfile")
+public class CustomerAccountJaxRsServiceTest {
 
     @Autowired
-    @Qualifier("customerAccountServiceYaasImpl")
-    private CustomerAccountService customerAccountServiceYaas;
+    private CustomerAccountService customerAccountService;
 
     @Test
-    public void getAccountsWithYaas() throws Exception {
+    public void getAccountsWithJaxRs() throws Exception {
 
         printSeparatorLine("-");
-        List<CustomerAccount> s = customerAccountServiceYaas.getCustomerAccounts();
+        List<CustomerAccount> s = customerAccountService.getCustomerAccounts();
         System.out.println("Response: " + s);
         printSeparatorLine("-");
     }
-
 
     private void printSeparatorLine(String pattern) {
         String repeated = new String(new char[80]).replace("\0", pattern);

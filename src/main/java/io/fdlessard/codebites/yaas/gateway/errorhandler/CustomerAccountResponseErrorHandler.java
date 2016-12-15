@@ -1,4 +1,4 @@
-package io.fdlessard.codebites.yaas.services.errorhandler;
+package io.fdlessard.codebites.yaas.gateway.errorhandler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,15 @@ public class CustomerAccountResponseErrorHandler implements ResponseErrorHandler
 
     @Override
     public void handleError(ClientHttpResponse response) throws IOException {
+
+       // HttpStatus statusCode = response.getStatusCode();
         LOGGER.error("Response error: {} {}", response.getStatusCode(), response.getStatusText());
+/*
+        if(statusCode == HttpStatus.NOT_FOUND) {
+            LOGGER.error("NOT FOUND");
+        } else if (statusCode == HttpStatus.UNAUTHORIZED) {
+            LOGGER.error("UNAUTHORIZED");
+        }*/
     }
 
     @Override

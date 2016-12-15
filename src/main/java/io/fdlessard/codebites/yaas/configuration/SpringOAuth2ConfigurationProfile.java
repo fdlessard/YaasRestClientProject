@@ -1,8 +1,11 @@
 package io.fdlessard.codebites.yaas.configuration;
 
-import io.fdlessard.codebites.yaas.properties.CustomerAccountServiceProperties;
-import io.fdlessard.codebites.yaas.services.errorhandler.CustomerAccountResponseErrorHandler;
-import io.fdlessard.codebites.yaas.services.interceptor.YaasRequestInterceptor;
+import io.fdlessard.codebites.yaas.gateway.CustomerAccountGateway;
+import io.fdlessard.codebites.yaas.gateway.CustomerAccountSpringGateway;
+import io.fdlessard.codebites.yaas.properties.CustomerAccountGatewayProperties;
+import io.fdlessard.codebites.yaas.gateway.errorhandler.CustomerAccountResponseErrorHandler;
+import io.fdlessard.codebites.yaas.gateway.interceptor.DebugClientHttpRequestInterceptor;
+import io.fdlessard.codebites.yaas.gateway.interceptor.YaasRequestInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +28,18 @@ import java.util.List;
  * Created by fdlessard on 16-10-28.
  */
 @Configuration
-@Profile("development")
-public class DevelopmentConfiguration {
+@Profile("SpringOAuth2Profile")
+public class SpringOAuth2ConfigurationProfile {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DevelopmentConfiguration.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SpringOAuth2ConfigurationProfile.class);
 
     @Autowired
-    private CustomerAccountServiceProperties customerAccountServiceProperties;
+    private CustomerAccountGatewayProperties customerAccountGatewayProperties;
+
+    @Bean
+    public CustomerAccountGateway getCustomerAccountGateway() {
+        return new CustomerAccountSpringGateway();
+    }
 
     @Bean
     protected OAuth2ProtectedResourceDetails getResourceDetails() {
@@ -39,10 +47,10 @@ public class DevelopmentConfiguration {
         LOGGER.info("getResourceDetails()");
 
         ClientCredentialsResourceDetails resource = new ClientCredentialsResourceDetails();
-        resource.setAccessTokenUri(customerAccountServiceProperties.getOauth2().getTokenUrl());
-        resource.setClientId(customerAccountServiceProperties.getOauth2().getClient().getId());
-        resource.setClientSecret(customerAccountServiceProperties.getOauth2().getClient().getSecret());
-        resource.setScope(customerAccountServiceProperties.getScopes());
+        resource.setAccessTokenUri(customerAccountGatewayProperties.getOauth2().getTokenUrl());
+        resource.setClientId(customerAccountGatewayProperties.getOauth2().getClient().getId());
+        resource.setClientSecret(customerAccountGatewayProperties.getOauth2().getClient().getSecret());
+        resource.setScope(customerAccountGatewayProperties.getScopes());
 
         return resource;
     }
@@ -58,6 +66,8 @@ public class DevelopmentConfiguration {
         // Setting the interceptors to add YaaS specific http header properties
         List<ClientHttpRequestInterceptor> listOfInterceptors = new ArrayList<>();
         listOfInterceptors.add(new YaasRequestInterceptor());
+        listOfInterceptors.add(new DebugClientHttpRequestInterceptor());
+
         restTemplate.setInterceptors(listOfInterceptors);
 
         // Setting the response error handler for the rest template

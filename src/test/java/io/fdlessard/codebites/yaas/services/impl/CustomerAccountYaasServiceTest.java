@@ -2,7 +2,6 @@ package io.fdlessard.codebites.yaas.services.impl;
 
 import io.fdlessard.codebites.yaas.domain.CustomerAccount;
 import io.fdlessard.codebites.yaas.services.CustomerAccountService;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,28 +13,21 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.List;
 
 /**
- * Created by fdlessard on 16-10-24.
+ * Created by fdlessard on 16-10-29.
  */
-
 @RunWith(SpringRunner.class)
 @SpringBootTest()
-@ActiveProfiles("development")
-public class CustomerAccountServiceSpringImplTest {
+@ActiveProfiles("YaasAuthorizedTemplateProfile")
+public class CustomerAccountYaasServiceTest {
 
     @Autowired
-    @Qualifier("customerAccountServiceSpringImpl")
-    private CustomerAccountService customerAccountServiceSpring;
-
-
-    @Before
-    public void setUp() throws Exception {
-    }
+    private CustomerAccountService customerAccountService;
 
     @Test
-    public void getAccountsWithSpring() throws Exception {
+    public void getAccountsWithYaas() throws Exception {
 
         printSeparatorLine("-");
-        List<CustomerAccount> s = customerAccountServiceSpring.getCustomerAccounts();
+        List<CustomerAccount> s = customerAccountService.getCustomerAccounts();
         System.out.println("Response: " + s);
         printSeparatorLine("-");
     }
